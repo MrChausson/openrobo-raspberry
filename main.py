@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 import json
+import os
+from playsound import playsound
 import requests
 
 def display_stream(response):
@@ -7,7 +9,14 @@ def display_stream(response):
         if line:
             response_json = json.loads(line)
             if 'response' in response_json:
-                print(response_json['response'], end='', flush=True)
+                text = response_json['response']
+                print(text, end='', flush=True)
+                
+                # Speak the response
+                directory = "/home/melio/rp-main/piper"
+                model = "en_US-lessac-medium"
+                os.system(f"echo '{text}' | piper --model {model} --output_file {directory}/welcome.wav")
+                playsound(directory + "/welcome.wav")
 
 def main():
     data = '{"model": "phi3", "prompt":"Can you say hello", "stream": true}'
