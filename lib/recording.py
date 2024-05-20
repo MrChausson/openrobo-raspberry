@@ -35,6 +35,13 @@ class Recording:
             on_press=self.key_pressed,
             on_release=self.key_released)
         listener.start()
+        self.recording_done = threading.Event()
+        self.reset()
+
+    def reset(self):
+        self.is_recording = False
+        self.recording_done.clear()
+        self.recording = np.array([])
 
     def record_audio(self):
         print("Start recording")
@@ -53,6 +60,7 @@ class Recording:
         print("Recording finished")
         # Save as WAV file
         wav.write(self.audio_file_path, self.fs, self.recording[:recording_length].astype(np.int16))
+        self.recording_done.set()
 
     def key_pressed(self, key):
         try:

@@ -2,7 +2,8 @@ import requests
 
 class ApiClient:
     def __init__(self):
-        self.url = "https://openrobo-api.chausson.services"
+        # self.url = "https://openrobo-api.chausson.services"
+        self.url = "http://localhost:8080"
         self.token = "***REMOVED***"
         self.headers = {"Authorization": f"Bearer {self.token}"}
 
@@ -16,3 +17,7 @@ class ApiClient:
             return response.content
         else:
             return None
+
+    def Ask(self, text):
+        response = requests.get(f"{self.url}/ask", headers=self.headers, params={"question": text, "smiley": "no"})
+        return response.text
