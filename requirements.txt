@@ -1,2 +1,8 @@
 requests
-faster-whisper
+pydub
+sounddevice
+scipy
+RPi.GPIO
+pynput
+pyaudio
+librosa
