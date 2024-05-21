@@ -6,7 +6,7 @@ from pynput import keyboard
 import pyaudio
 import librosa
 import soundfile as sf
-
+from gpiozero import Button
 
 class Recording:
     def __init__(self):
@@ -36,6 +36,9 @@ class Recording:
             on_release=self.key_released)
         listener.start()
         self.recording_done = threading.Event()
+        self.button = Button(2, bounce_time=0.1)
+        self.button.when_pressed = self.button_pressed
+        self.button.when_released = self.button_released
         self.reset()
 
     def reset(self):
@@ -87,3 +90,13 @@ class Recording:
 
         # Save the resampled audio
         sf.write(self.audio_file_path, y_resampled, 16000)
+    
+    def button_pressed(self):
+        if self.is_recording:
+            self.is_recording = False
+        else:
+            self.is_recording = True
+            threading.Thread(target=self.record_audio).start()
+
+    def button_released(self):
+        pass  # Do nothing on button release
