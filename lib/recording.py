@@ -6,7 +6,7 @@ from pynput import keyboard
 import pyaudio
 import librosa
 import soundfile as sf
-from gpiozero import Button
+import platform
 
 class Recording:
     def __init__(self):
@@ -36,9 +36,12 @@ class Recording:
             on_release=self.key_released)
         listener.start()
         self.recording_done = threading.Event()
-        self.button = Button(2, bounce_time=0.1)
-        self.button.when_pressed = self.button_pressed
-        self.button.when_released = self.button_released
+        if platform.machine() == 'armv7l':  # Check if the script is running on a Raspberry Pi
+            from gpiozero import Button
+            self.button = Button(2, bounce_time=0.1)
+            self.button.when_pressed = self.button_pressed
+            self.button.when_released = self.button_released
+
         self.reset()
 
     def reset(self):

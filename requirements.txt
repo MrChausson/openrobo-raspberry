@@ -2,8 +2,8 @@ requests
 pydub
 sounddevice
 scipy
-RPi.GPIO
 pynput
 pyaudio
 librosa
 termcolor
+gpiozero
