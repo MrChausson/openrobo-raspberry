@@ -1,10 +1,11 @@
 import requests
+import os
 
 class ApiClient:
     def __init__(self):
-        self.url = "https://openrobo-api.chausson.services"
+        self.url = os.getenv("OPENROBO_API_URL")
         # self.url = "http://localhost:8080"
-        self.token = "***REMOVED***"
+        self.token = os.getenv("OPENROBO_API_TOKEN")
         self.headers = {"Authorization": f"Bearer {self.token}"}
 
     def introduce(self):
